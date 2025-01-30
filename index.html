@@ -1,127 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeikakuBot Trading Strategy</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background-color: #1c1c1c;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            color: #2d3436;
             line-height: 1.6;
             padding: 20px;
         }
-        h1, h2, h3 {
-            color: #ffcc00;
-        }
+
         .container {
             max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background-color: #333;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .section {
+
+        .header {
+            text-align: center;
             margin-bottom: 30px;
+            border-bottom: 3px solid #0984e3;
+            padding-bottom: 20px;
         }
-        .section img {
-            display: block;
-            margin: 20px auto;
-        }
-        .section p {
-            margin: 10px 0;
-        }
-        .title {
-            font-size: 1.5em;
+
+        h1 {
+            color: #0984e3;
+            font-size: 2.5em;
             margin-bottom: 10px;
         }
-        .subtitle {
-            font-size: 1.2em;
-            margin-bottom: 5px;
+
+        h2 {
+            color: #0984e3;
+            margin: 25px 0 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #dfe6e9;
+        }
+
+        h3 {
+            color: #00b894;
+            margin: 20px 0 10px;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: #d63031;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #fdcb6e;
+            margin: 20px 0;
+            border-radius: 3px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>SeikakuBot Trading Strategy</h1>
-        
-        <div class="section">
-            <h2>Before trading, it’s very important to read this information!</h2>
+        <div class="header">
+            <h1>SeikakuBot Trading Strategy</h1>
+           
         </div>
 
         <div class="section">
-            <h3>1. General principle of the strategy:</h3>
-            <p>1. <b>The strategy analyzes price data and indicators</b> (RSI, Stoch, MACD, ATR, etc.) on 15-minute and 1-hour timeframes.</p>
-            <p>2. <b>A machine learning model</b> predicts the probability of a price increase (prob_up). If the probability is high enough, the strategy suggests a <b>BUY</b> signal; if it’s low, a <b>SELL</b> signal.</p>
-            <p>3. For each signal, <b>Stop-Loss (SL)</b> and <b>Take-Profit (TP)</b> are calculated based on volatility (ATR). This is done to limit losses and secure profits when the target price is reached.</p>
-        </div>
-
-        <div class="section">
-            <h3>2. How to enter a trade based on the signal</h3>
-            <p>1. <b>Receiving the signal</b></p>
-            <p>When the bot sends a notification for a possible trade (with specified Entry, SL, and TP), you will see:</p>
+            <h2>1. Общий принцип работы стратегии</h2>
             <ul>
-                <li><b>Entry (Entry price)</b> – the intended price to enter the trade.</li>
-                <li><b>Stop-Loss (Stop Loss)</b> – the level at which to close the trade if the price moves unfavorably.</li>
-                <li><b>Take-Profit (Take Profit)</b> – the level at which to lock in profit once the price target is reached.</li>
-                <li><b>Type of trade</b> (BUY or SELL) – going long (buy) or going short (sell).</li>
-            </ul>
-            <p>2. <b>Opening the trade</b></p>
-            <ul>
-                <li>If the signal is <b>BUY</b>, place a buy order around the Entry price.</li>
-                <li>If the signal is <b>SELL</b>, place a sell (short) order around the Entry price.</li>
-            </ul>
-            <p><i>Note: On a real market, there might be slippage, so the actual entry price may slightly differ from the “ideal” figures.</i></p>
-            <p>3. <b>Stop-Loss and Take-Profit</b></p>
-            <ul>
-                <li>Right after opening a position, <b>set the Stop-Loss (SL) and Take-Profit (TP)</b> as indicated by the bot.</li>
-                <li>This prevents excessive losses if the market goes against you, and ensures profit is taken if the price reaches the target.</li>
+                <li><strong>Стратегия анализирует данные по цене и индикаторам</strong> (RSI, Stoch, MACD, ATR и др.) на графиках 15-минутного и 1-часового таймфреймов.</li>
+                <li><strong>Модель машинного обучения</strong> прогнозирует, какова вероятность роста цены (prob_up). Если вероятность достаточно высокая, стратегия предлагает сигнал <span class="highlight">BUY</span>, если низкая – сигнал <span class="highlight">SELL</span>.</li>
+                <li>Для каждого сигнала рассчитываются <span class="highlight">стоп-лосс (SL)</span> и <span class="highlight">тейк-профит (TP)</span> на основе волатильности (ATR). Это делается для того, чтобы ограничить убытки и фиксировать прибыль при достижении целевой цены.</li>
             </ul>
         </div>
 
         <div class="section">
-            <h3>3. Risk management and position sizing</h3>
-            <p>1. <b>Recommended risk per trade</b> – no more than <b>1–2%</b> of your total deposit.</p>
-            <p>Example: If you have 1000 USDT in your account, risk no more than 10–20 USDT (1–2% of 1000 USDT) on each trade.</p>
-            <p>This approach allows you to withstand a series of losing trades without a catastrophic drop in your account balance.</p>
-            <p>2. <b>Why 1–2% specifically?</b></p>
-            <p>The market can be unpredictable, and losing trades are a normal part of any trading system.</p>
-            <p>Trading with a small risk per trade helps maintain calm and discipline, allowing the strategy to work over the long term.</p>
-            <p>3. <b>Calculating trade volume</b></p>
-            <p>If a signal indicates a risk/reward ratio of about 1:1.5 or 1:2, that’s enough for a series of winning trades to cover a series of losing ones.</p>
-            <p>The key is to <b>strictly adhere to your risk limits</b>, to avoid “riding out” losses, and not to open oversized positions.</p>
-        </div>
-
-        <div class="section">
-            <h3>4. Why the strategy can work even with < 50% winning trades</h3>
-            <p>In the reports, you might notice that the <b>Win Rate</b> (the percentage of winning trades) can be around 45–50%.</p>
-            <p><b>January 2025 reports</b>:</p>
+            <h2>2. Как заходить в сделку по сигналу</h2>
+            <h3>1. Получение сигнала</h3>
             <ul>
-                <li>Total trades: 7362</li>
-                <li>Win Rate: 45.69%</li>
-                <li>Final return: 495.64%</li>
-                <li>Maximum drawdown: 67.30%</li>
+                <li>Когда бот присылает уведомление о возможной сделке (с указываемыми Entry, SL и TP), вы видите:</li>
+                <ul>
+                    <li><strong>Вход (Entry price)</strong> – по какой цене предполагается вход.</li>
+                    <li><strong>Стоп-лосс (Stop Loss)</strong> – на каком уровне нужно закрыть сделку при неблагоприятном движении цены.</li>
+                    <li><strong>Тейк-профит (Take Profit)</strong> – по достижении какого уровня следует зафиксировать прибыль.</li>
+                    <li><strong>Тип сделки</strong> (BUY или SELL) – лонг (покупка) или шорт (продажа).</li>
+                </ul>
             </ul>
-            <p>Despite that, the final return can still be high thanks to <b>proper risk management</b> and a <b>positive “average profit / average loss” ratio</b>.</p>
-            <p>In other words, <b>when a trade is profitable, the profit is usually larger than the loss in a losing trade</b>. This compensates for having only about half (or even slightly fewer) winning trades.</p>
+
+            <h3>2. Открытие сделки</h3>
+            <ul>
+                <li>Если сигнал <span class="highlight">BUY</span>, выставляете ордер на покупку в районе Entry price.</li>
+                <li>Если сигнал <span class="highlight">SELL</span>, выставляете ордер на продажу (шорт) в районе Entry price.</li>
+                <li>Важно: учитывайте, что на реальном рынке цена может проскальзывать, поэтому вход может немного отличаться от «идеальных» цифр стратегии.</li>
+            </ul>
+
+            <h3>3. Стоп-лосс и тейк-профит</h3>
+            <ul>
+                <li>Сразу же после открытия позиции <strong>установите стоп-лосс (SL)</strong> и тейк-профит (TP), указанные ботом.</li>
+                <li>Это убережёт вас от чрезмерных потерь, если рынок пойдёт в другую сторону, и зафиксирует прибыль, если цена достигнет цели.</li>
+            </ul>
         </div>
 
         <div class="section">
-            <h3>5. Additional tips</h3>
-            <p>1. <b>Never move the set Stop-Loss</b>. Moving the SL “further away,” hoping the market will turn around, is the quickest way to incur large losses.</p>
-            <p>2. <b>Pay attention to liquidity and volatility</b>. In a calm market, signals may take longer to play out; in a volatile market, they may execute quickly.</p>
-            <p>3. <b>Regularly withdraw some profit</b> (if trading on a live account). This helps lock in gains and offers psychological support.</p>
-            <p>4. <b>Always remember that the market does not guarantee profit</b>. Any strategy can go through a losing streak, and you must be prepared both financially and mentally.</p>
+            <h2>3. Риск-менеджмент и размер позиции</h2>
+            <ul>
+                <li><strong>Рекомендуемый риск на сделку</strong> – не более <span class="highlight">1–2%</span> от общего депозита.</li>
+                <ul>
+                    <li>Пример: если у вас 1000 USDT на счёте, то в каждой сделке вы рискуете не более 10–20 USDT (1–2% от 1000 USDT).</li>
+                    <li>Этот подход позволяет пережить серию убыточных сделок без катастрофического снижения депозита.</li>
+                </ul>
+                <li><strong>Почему именно 1–2%?</strong></li>
+                <ul>
+                    <li>Рынок может быть непредсказуемым, и убыточные сделки – нормальная часть любой торговой системы.</li>
+                    <li>Торговля с небольшим риском на каждую сделку позволяет сохранять спокойствие и дисциплину, а стратегия продолжит работать на дистанции.</li>
+                </ul>
+            </ul>
         </div>
 
         <div class="section">
-            <h3>6. Conclusion</h3>
-            <p>The strategy is based on a mathematical model and statistics. It <b>does not provide a 100% guarantee</b>, but it can perform over the long run through strict adherence to entry, risk, and exit rules.</p>
-            <p>The key to success is <b>discipline</b>. Even the best strategy can turn unprofitable if you don’t follow the prescribed risk and respect your Stop-Loss.</p>
-            <p>Beginners are advised to practice on a demo account or trade with minimal volumes until they are comfortable following the system.</p>
-            <p><b>Happy trading!</b> And remember, no strategy is immune to all market risks, so always trade responsibly and within your own risk tolerance.</p>
+            <h2>4. Дополнительные советы</h2>
+            <ul>
+                <li><strong>Не нарушайте выставленный стоп-лосс.</strong> Переносить SL «подальше», надеясь, что рынок развернётся, – самый простой способ получить большие убытки.</li>
+                <li><strong>Следите за ликвидностью и волатильностью.</strong> На спокойном рынке сигналы могут срабатывать дольше, на волатильном – быстро.</li>
+                <li><strong>Регулярно выводите часть прибыли</strong> (если торгуете на реальном счёте). Это помогает зафиксировать результат и психологически поддерживает.</li>
+                <li><strong>Всегда помните, что рынок не гарантирует прибыли.</strong> Любая стратегия может дать убыточную серию сделок, и к этому нужно быть готовы как финансово, так и морально.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Итог</h2>
+            <ul>
+                <li>Стратегия основывается на математической модели и статистике. Она <strong>не даёт 100% гарантию</strong>, но работает на дистанции за счёт строгого соблюдения правил входа, риска и выхода.</li>
+                <li>Ключ к успеху – <span class="highlight">дисциплина</span>. Даже лучшая стратегия может превратиться в убыточную, если не придерживаться предписанного риска и не следовать стоп-лоссу.</li>
+                <li>Начинающим трейдерам рекомендуется торговать на демо-счёте или с минимальными объёмами, пока не появится понимание и комфорт при следовании этой системе.</li>
+            </ul>
+        </div>
+
+        <div class="note" style="background: #e3f2fd; border-color: #64b5f6;">
+            <p>Удачных трейдов! И не забывайте, что никакая стратегия не защищает от всех рыночных рисков, поэтому всегда торгуйте с умом и согласно вашей личной толерантности к риску.</p>
         </div>
     </div>
 </body>
